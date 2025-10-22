@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {
   Box,
   Button,
@@ -12,34 +12,34 @@ import {
   MenuItem,
 } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
+import { RootState } from '../../../app/store'
 import { setFilters } from '../redux/body-parts-slice'
 
 export const BodyPartsFilter: React.FC = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  
-  const [searchTerm, setSearchTerm] = useState('')
-  const [statusFilter, setStatusFilter] = useState<string>('all')
+  const { filters } = useSelector((state: RootState) => state.bodyParts)
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value)
+    dispatch(setFilters({ ...filters, name: event.target.value || undefined }))
   }
 
   const handleStatusFilterChange = (event: any) => {
-    setStatusFilter(event.target.value)
+    const statusValue = event.target.value
+    const newFilters = { ...filters }
+    if (statusValue === 'all') {
+      delete newFilters.active
+    } else {
+      newFilters.active = statusValue === 'active'
+    }
+    dispatch(setFilters(newFilters))
   }
 
   const handleSearchSubmit = () => {
-    const newFilters: any = {}
-    if (searchTerm) {
-      newFilters.name = searchTerm
-    }
-    if (statusFilter !== 'all') {
-      newFilters.active = statusFilter === 'active'
-    }
-    dispatch(setFilters(newFilters))
+    // Trigger fetch with current filters
+    dispatch({ type: 'bodyParts/fetchBodyParts', payload: filters })
   }
 
   return (
@@ -50,7 +50,7 @@ export const BodyPartsFilter: React.FC = () => {
             <TextField
               fullWidth
               placeholder={t('bodyParts.searchPlaceholder')}
-              value={searchTerm}
+              value={filters.name || ''}
               onChange={handleSearchChange}
               onKeyPress={(e) => e.key === 'Enter' && handleSearchSubmit()}
               InputProps={{
@@ -62,7 +62,7 @@ export const BodyPartsFilter: React.FC = () => {
             <FormControl fullWidth>
               <InputLabel>{t('common.status')}</InputLabel>
               <Select
-                value={statusFilter}
+                value={filters.active === undefined ? 'all' : filters.active ? 'active' : 'inactive'}
                 label={t('common.status')}
                 onChange={handleStatusFilterChange}
               >

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
   Table,
   TableBody,
@@ -15,23 +15,38 @@ import {
 } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
+import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
+import { RootState } from '../../../app/store'
+import { openEditModal, deleteBodyPart, updateBodyPart, fetchBodyParts } from '../redux/body-parts-slice'
 import { BodyPart } from '../types/body-part.types'
 
-interface BodyPartsListProps {
-  bodyParts: BodyPart[]
-  onEdit: (bodyPart: BodyPart) => void
-  onDelete: (bodyPart: BodyPart) => void
-  onToggleActive: (bodyPart: BodyPart) => void
-}
-
-export const BodyPartsList: React.FC<BodyPartsListProps> = ({ 
-  bodyParts, 
-  onEdit, 
-  onDelete, 
-  onToggleActive 
-}) => {
+export const BodyPartsList: React.FC = () => {
   const { t } = useTranslation()
+  const dispatch = useDispatch()
+  const { bodyParts, filters } = useSelector((state: RootState) => state.bodyParts)
+
+  useEffect(() => {
+    dispatch(fetchBodyParts(filters) as any)
+  }, [dispatch, filters])
+
+  const handleEditClick = (bodyPart: BodyPart) => {
+    dispatch(openEditModal(bodyPart))
+  }
+
+  const handleDeleteClick = async (bodyPart: BodyPart) => {
+    if (window.confirm(t('bodyParts.deleteConfirm'))) {
+      await dispatch(deleteBodyPart(bodyPart as any) as any)
+    }
+  }
+
+  const handleToggleActive = async (bodyPart: BodyPart) => {
+    await dispatch(updateBodyPart({ 
+      id: bodyPart as any, 
+      data: { isActive: !bodyPart.isActive } 
+    }) as any)
+  }
+
   if (bodyParts.length === 0) {
     return (
       <Box sx={{ textAlign: 'center', py: 4 }}>
@@ -83,13 +98,13 @@ export const BodyPartsList: React.FC<BodyPartsListProps> = ({
               <TableCell align="center">
                 <Switch
                   checked={bodyPart.isActive}
-                  onChange={() => onToggleActive(bodyPart)}
+                  onChange={() => handleToggleActive(bodyPart)}
                   size="small"
                   color="primary"
                 />
                 <IconButton
                   size="small"
-                  onClick={() => onEdit(bodyPart)}
+                  onClick={() => handleEditClick(bodyPart)}
                   color="primary"
                   sx={{ ml: 1 }}
                 >
@@ -97,7 +112,7 @@ export const BodyPartsList: React.FC<BodyPartsListProps> = ({
                 </IconButton>
                 <IconButton
                   size="small"
-                  onClick={() => onDelete(bodyPart)}
+                  onClick={() => handleDeleteClick(bodyPart)}
                   color="error"
                 >
                   <DeleteIcon />

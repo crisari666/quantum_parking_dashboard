@@ -14,20 +14,13 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { RootState } from '../../../app/store'
-import { createBodyPart, updateBodyPart } from '../redux/body-parts-slice'
+import { createBodyPart, updateBodyPart, closeModal } from '../redux/body-parts-slice'
 import { BodyPart } from '../types/body-part.types'
 
-interface BodyPartModalProps {
-  open: boolean
-  mode: 'create' | 'edit'
-  bodyPart?: BodyPart | null
-  onClose: () => void
-}
-
-export const BodyPartModal: React.FC<BodyPartModalProps> = ({ open, mode, bodyPart, onClose }) => {
+export const BodyPartModal: React.FC = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const { status } = useSelector((state: RootState) => state.bodyParts)
+  const { status, isModalOpen, modalMode, selectedBodyPart } = useSelector((state: RootState) => state.bodyParts)
   
   const [formData, setFormData] = useState({
     name: '',
@@ -37,12 +30,12 @@ export const BodyPartModal: React.FC<BodyPartModalProps> = ({ open, mode, bodyPa
   })
 
   useEffect(() => {
-    if (mode === 'edit' && bodyPart) {
+    if (modalMode === 'edit' && selectedBodyPart) {
       setFormData({
-        name: bodyPart.name,
-        nameEnglish: bodyPart.nameEnglish,
-        description: bodyPart.description,
-        isActive: bodyPart.isActive,
+        name: selectedBodyPart.name,
+        nameEnglish: selectedBodyPart.nameEnglish,
+        description: selectedBodyPart.description,
+        isActive: selectedBodyPart.isActive,
       })
     } else {
       setFormData({
@@ -52,7 +45,7 @@ export const BodyPartModal: React.FC<BodyPartModalProps> = ({ open, mode, bodyPa
         isActive: true,
       })
     }
-  }, [mode, bodyPart, open])
+  }, [modalMode, selectedBodyPart, isModalOpen])
 
   const handleInputChange = (field: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormData(prev => ({
@@ -80,13 +73,13 @@ export const BodyPartModal: React.FC<BodyPartModalProps> = ({ open, mode, bodyPa
       isActive: formData.isActive,
     }
 
-    if (mode === 'create') {
+    if (modalMode === 'create') {
       await dispatch(createBodyPart(bodyPartData) as any)
-    } else if (mode === 'edit' && bodyPart) {
-      await dispatch(updateBodyPart({ id: bodyPart as any, data: bodyPartData }) as any)
+    } else if (modalMode === 'edit' && selectedBodyPart) {
+      await dispatch(updateBodyPart({ id: selectedBodyPart as any, data: bodyPartData }) as any)
     }
 
-    onClose()
+    dispatch(closeModal())
   }
 
   const handleClose = () => {
@@ -96,13 +89,13 @@ export const BodyPartModal: React.FC<BodyPartModalProps> = ({ open, mode, bodyPa
       description: '',
       isActive: true,
     })
-    onClose()
+    dispatch(closeModal())
   }
 
   return (
-    <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
+    <Dialog open={isModalOpen} onClose={handleClose} maxWidth="sm" fullWidth>
       <DialogTitle>
-        {mode === 'create' ? t('bodyParts.createTitle') : t('bodyParts.editTitle')}
+        {modalMode === 'create' ? t('bodyParts.createTitle') : t('bodyParts.editTitle')}
       </DialogTitle>
       <DialogContent>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: 1 }}>
@@ -150,7 +143,7 @@ export const BodyPartModal: React.FC<BodyPartModalProps> = ({ open, mode, bodyPa
           variant="contained"
           disabled={status === 'loading' || !formData.name || !formData.nameEnglish || !formData.description}
         >
-          {status === 'loading' ? t('common.loading') : mode === 'create' ? t('common.create') : t('common.update')}
+          {status === 'loading' ? t('common.loading') : modalMode === 'create' ? t('common.create') : t('common.update')}
         </Button>
       </DialogActions>
     </Dialog>
