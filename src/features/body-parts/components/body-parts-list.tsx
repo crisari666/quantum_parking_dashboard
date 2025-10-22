@@ -28,7 +28,7 @@ export const BodyPartsList: React.FC = () => {
 
   useEffect(() => {
     dispatch(fetchBodyParts(filters) as any)
-  }, [dispatch, filters])
+  }, [])
 
   const handleEditClick = (bodyPart: BodyPart) => {
     dispatch(openEditModal(bodyPart))

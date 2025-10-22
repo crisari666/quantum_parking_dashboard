@@ -39,7 +39,6 @@ export const BodyPartsFilter: React.FC = () => {
 
   const handleSearchSubmit = () => {
     // Trigger fetch with current filters
-    dispatch({ type: 'bodyParts/fetchBodyParts', payload: filters })
   }
 
   return (

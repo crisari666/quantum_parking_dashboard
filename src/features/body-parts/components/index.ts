@@ -1,5 +1,4 @@
 export { BodyPartsHeader } from './body-parts-header'
-export { BodyPartsContent } from './body-parts-content'
 export { BodyPartsList } from './body-parts-list'
 export { BodyPartModal } from './body-part-modal'
 export { BodyPartsFilter } from './body-parts-filter'

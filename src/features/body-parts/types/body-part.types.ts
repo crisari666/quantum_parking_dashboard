@@ -1,6 +1,7 @@
 export interface BodyPart {
   name: string
   nameEnglish: string
+  _id: string
   description: string
   isActive: boolean
   createdAt?: Date

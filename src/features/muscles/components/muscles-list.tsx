@@ -11,6 +11,8 @@ import {
   Chip,
   Box,
   Typography,
+  Alert,
+  CircularProgress,
 } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
@@ -21,23 +23,27 @@ import { openEditModal, deleteMuscle, fetchMuscles } from '../redux/muscles-slic
 import { fetchBodyParts } from '../../body-parts/redux/body-parts-slice'
 import { Muscle } from '../types/muscle.types'
 import { BodyPart } from '../../body-parts/types/body-part.types'
+import { log } from 'console'
 
 export const MusclesList: React.FC = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const { muscles, filters } = useSelector((state: RootState) => state.muscles)
-  const { bodyParts } = useSelector((state: RootState) => state.bodyParts)
+  const { muscles, filters, status: musclesStatus, error } = useSelector((state: RootState) => state.muscles)
+  const { bodyParts, status: bodyPartsStatus } = useSelector((state: RootState) => state.bodyParts)
 
+  // First, fetch body parts if not already loaded
   useEffect(() => {
-    dispatch(fetchMuscles(filters) as any)
-  }, [dispatch, filters])
-
-  useEffect(() => {
-    // Fetch body parts if not already loaded
     if (bodyParts.length === 0) {
       dispatch(fetchBodyParts() as any)
     }
-  }, [dispatch, bodyParts.length])
+  }, [])
+
+  // Then, fetch muscles only after body parts are loaded
+  useEffect(() => {
+    if (bodyParts.length > 0 && bodyPartsStatus === 'idle') {
+      dispatch(fetchMuscles(filters) as any)
+    }
+  }, [bodyParts.length])
 
   const handleEditClick = (muscle: Muscle) => {
     dispatch(openEditModal(muscle))
@@ -50,14 +56,42 @@ export const MusclesList: React.FC = () => {
   }
 
   // Function to resolve body part name
-  const getBodyPartName = (bodyPartId: string): string => {
-    const bodyPart = bodyParts.find(bp => bp.name === bodyPartId || bp.nameEnglish === bodyPartId)
+  const getBodyPartName = (bodyPartId: string): string => {    
+    const bodyPart = bodyParts.find(bp => bp._id === bodyPartId)
     if (bodyPart) {
-      return bodyPart.nameEnglish || bodyPart.name
+      return bodyPart.name || bodyPart.nameEnglish
     }
     
     return bodyPartId // Fallback to the original ID
   }
+
+  // Show error state
+  if (error) {
+    return (
+      <Alert severity="error" sx={{ mb: 2 }}>
+        {error}
+      </Alert>
+    )
+  }
+
+  // Show loading state while body parts are being fetched
+  if (bodyPartsStatus === 'loading') {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
+        <CircularProgress />
+      </Box>
+    )
+  }
+
+  // Show loading state while muscles are being fetched
+  if (musclesStatus === 'loading') {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
+        <CircularProgress />
+      </Box>
+    )
+  }
+
   if (muscles.length === 0) {
     return (
       <Box sx={{ textAlign: 'center', py: 4 }}>
