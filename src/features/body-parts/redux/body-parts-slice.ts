@@ -79,7 +79,6 @@ export const bodyPartsSlice = createAppSlice({
     fetchBodyParts: create.asyncThunk(
       async (filters: BodyPartFilters | undefined) => {
         const bodyParts = await BodyPartsService.getAllBodyParts(filters)
-        console.log({ bodyParts })
         return bodyParts
       },
       {

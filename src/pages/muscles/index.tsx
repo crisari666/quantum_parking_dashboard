@@ -1,8 +1,16 @@
 import React from 'react'
-import { MusclesView } from '../../features/muscles'
+import { Box } from '@mui/material'
+import { MusclesHeader, MusclesFilter, MusclesContent, MuscleModal } from '../../features/muscles'
 
 const MusclesPage: React.FC = () => {
-  return <MusclesView />
+  return (
+    <Box sx={{ p: 3 }}>
+      <MusclesHeader />
+      <MusclesFilter />
+      <MusclesContent />
+      <MuscleModal />
+    </Box>
+  )
 }
 
 export default MusclesPage

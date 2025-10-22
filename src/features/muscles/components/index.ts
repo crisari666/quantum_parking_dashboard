@@ -1,4 +1,5 @@
-export { MusclesView } from './muscles-view'
+export { MusclesHeader } from './muscles-header'
+export { MusclesContent } from './muscles-content'
 export { MusclesList } from './muscles-list'
 export { MuscleModal } from './muscle-modal'
 export { MusclesFilter } from './muscles-filter'

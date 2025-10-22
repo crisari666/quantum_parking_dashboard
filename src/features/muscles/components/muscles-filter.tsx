@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {
   Box,
   Button,
@@ -8,22 +8,23 @@ import {
   Grid,
 } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
+import { RootState } from '../../../app/store'
 import { setFilters } from '../redux/muscles-slice'
 
 export const MusclesFilter: React.FC = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  
-  const [searchTerm, setSearchTerm] = useState('')
+  const { filters } = useSelector((state: RootState) => state.muscles)
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value)
+    dispatch(setFilters({ bodyPart: event.target.value || undefined }))
   }
 
   const handleSearchSubmit = () => {
-    dispatch(setFilters({ bodyPart: searchTerm || undefined }))
+    // Trigger fetch with current filters
+    dispatch({ type: 'muscles/fetchMuscles', payload: filters })
   }
 
   return (
@@ -34,7 +35,7 @@ export const MusclesFilter: React.FC = () => {
             <TextField
               fullWidth
               placeholder={t('muscles.searchPlaceholder')}
-              value={searchTerm}
+              value={filters.bodyPart || ''}
               onChange={handleSearchChange}
               onKeyPress={(e) => e.key === 'Enter' && handleSearchSubmit()}
               InputProps={{
