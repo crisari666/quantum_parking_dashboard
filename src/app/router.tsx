@@ -9,6 +9,7 @@ import { ImportCustomersPage } from '../pages/customer/import-customers'
 import AgentView from '../pages/agent'
 import ExercisesPage from '../pages/exercises'
 import SignInPage from '../pages/auth/signin_page'
+import { UsersViewPage } from '../pages/users'
 import { Nav } from '../components/Nav'
 import { ProtectedRoute } from '../components/ProtectedRoute'
 
@@ -21,6 +22,7 @@ export const APP_ROUTES = {
   importCustomers: '/customer/import',
   agent: '/agent',
   exercises: '/exercises',
+  users: '/users',
   signin: '/signin',
 } as const
 
@@ -79,6 +81,10 @@ export const router = createBrowserRouter([
       {
         path: 'exercises',
         Component: ExercisesPage,
+      },
+      {
+        path: 'users',
+        Component: UsersViewPage,
       },
     ],
   },

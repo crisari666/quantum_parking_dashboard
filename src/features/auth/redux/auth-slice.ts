@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AuthState, User } from '../types/auth.types'
+import { Business } from '../../business/types/business.types'
 
 const initialState: AuthState = {
   user: null,
@@ -7,23 +8,31 @@ const initialState: AuthState = {
   isAuthenticated: false,
   isLoading: false,
   error: null,
+  business: null,
 }
 
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<{ user: User; token: string }>) => {
+    setUser: (state, action: PayloadAction<{ user: User; token: string; business?: Business | null }>) => {
       state.user = action.payload.user
       state.token = action.payload.token
       state.isAuthenticated = true
       state.error = null
+      if (action.payload.business !== undefined) {
+        state.business = action.payload.business
+      }
+    },
+    setBusiness: (state, action: PayloadAction<Business | null>) => {
+      state.business = action.payload
     },
     clearUser: (state) => {
       state.user = null
       state.token = null
       state.isAuthenticated = false
       state.error = null
+      state.business = null
     },
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload
@@ -41,12 +50,14 @@ export const authSlice = createSlice({
       state.isAuthenticated = false
       state.error = null
       state.isLoading = false
+      state.business = null
     },
   },
 })
 
 export const { 
   setUser, 
+  setBusiness,
   clearUser, 
   setLoading, 
   setError, 

@@ -45,7 +45,9 @@
     "exercises": "Ejercicios",
     "customers": "Clientes",
     "prospects": "Prospectos",
-    "agent": "Agente"
+    "agent": "Agente",
+    "business": "Negocio",
+    "users": "Usuarios"
   },
   "bodyParts": {
     "title": "Gestión de Partes del Cuerpo",
@@ -170,5 +172,46 @@
   "agent": {
     "title": "Agente",
     "welcome": "Bienvenido al Panel de Agente"
+  },
+  "business": {
+    "title": "Negocios",
+    "addBusiness": "Agregar Negocio",
+    "noBusinessesFound": "No se encontraron negocios.",
+    "businessName": "Nombre del Negocio",
+    "businessBrand": "Marca del Negocio",
+    "address": "Dirección",
+    "schedule": "Horario",
+    "createTitle": "Crear Negocio",
+    "editTitle": "Editar Negocio",
+    "deleteConfirm": "¿Estás seguro de que quieres eliminar este negocio?",
+    "createSuccess": "Negocio creado exitosamente",
+    "updateSuccess": "Negocio actualizado exitosamente",
+    "deleteSuccess": "Negocio eliminado exitosamente",
+    "createError": "Error al crear negocio",
+    "updateError": "Error al actualizar negocio",
+    "deleteError": "Error al eliminar negocio",
+    "fetchError": "Error al obtener negocios"
+  },
+  "users": {
+    "title": "Usuarios",
+    "addUser": "Agregar Usuario",
+    "noUsersFound": "No se encontraron usuarios.",
+    "role": "Rol",
+    "business": "Negocio",
+    "enable": "Habilitar",
+    "disable": "Deshabilitar",
+    "enableSuccess": "Usuario habilitado exitosamente",
+    "disableSuccess": "Usuario deshabilitado exitosamente",
+    "updateStatusError": "Error al actualizar el estado del usuario",
+    "createTitle": "Crear Usuario",
+    "editTitle": "Editar Usuario",
+    "deleteConfirm": "¿Estás seguro de que quieres eliminar este usuario?",
+    "createSuccess": "Usuario creado exitosamente",
+    "updateSuccess": "Usuario actualizado exitosamente",
+    "deleteSuccess": "Usuario eliminado exitosamente",
+    "createError": "Error al crear usuario",
+    "updateError": "Error al actualizar usuario",
+    "deleteError": "Error al eliminar usuario",
+    "fetchError": "Error al obtener usuarios"
   }
 }

@@ -1,3 +1,5 @@
+import { Business } from '../../business/types/business.types'
+
 export interface User {
   readonly id: string
   readonly username: string
@@ -10,6 +12,7 @@ export interface AuthState {
   readonly isAuthenticated: boolean
   readonly isLoading: boolean
   readonly error: string | null
+  readonly business: Business | null
 }
 
 export interface SignInRequest {
@@ -17,9 +20,14 @@ export interface SignInRequest {
   readonly password: string
 }
 
-export interface SignInResponse {
-  readonly access_token: string
-  readonly user: User
+export type SignInResponse = {
+  readonly token: string
+  readonly id: string
+  readonly business: string
+  readonly email: string | null
+  readonly name: string
+  readonly lastName: string
+  readonly role: 'admin' | 'user' | 'worker'
 }
 
 export interface UnauthorizedResponse {

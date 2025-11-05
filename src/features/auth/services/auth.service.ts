@@ -2,7 +2,7 @@ import { SignInRequest, SignInResponse, UnauthorizedResponse } from '../types/au
 import Api from '../../../app/http'
 
 export class AuthService {
-  private api = new Api(process.env.REACT_APP_API_URL)
+  private api = new Api(import.meta.env.REACT_APP_API_URL || import.meta.env.VITE_API_URL)
 
   async signIn(credentials: SignInRequest): Promise<SignInResponse> {
     try {

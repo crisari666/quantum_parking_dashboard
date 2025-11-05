@@ -1,5 +1,6 @@
 import { AxiosError, AxiosResponse } from 'axios'
 import axios from 'axios'
+import { AUTH_TOKEN_KEY } from './app_constants'
 
 // Unauthorized callback function
 let unauthorizedCallback: (() => void) | null = null
@@ -107,13 +108,15 @@ export default class Api {
   }
 
   getToken(): string | null {
-    return localStorage.getItem('auth_token')
+    return localStorage.getItem(AUTH_TOKEN_KEY)
   }
 
   private buildHeaders(token: string | null, isFormData: boolean = false): Record<string, string> {
     const headers: Record<string, string> = {
       'Content-type': isFormData ? 'multipart/form-data' : 'application/json'
     }
+
+    console.log({token})
     
     if (token) {
       headers['Authorization'] = `Bearer ${token}`
@@ -121,13 +124,12 @@ export default class Api {
     
     return headers
   }
-
   private handleUnauthorizedError(error: AxiosError): void {
     if (error.response?.status === 401) {
       const data: any = error.response?.data
       if (data?.error === 'Unauthorized' || data?.message === 'No token provided') {
         // Clear token from localStorage
-        localStorage.removeItem('auth_token')
+        localStorage.removeItem(AUTH_TOKEN_KEY)
         
         // Call the unauthorized callback if it's set
         if (unauthorizedCallback) {

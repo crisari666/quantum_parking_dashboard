@@ -45,7 +45,9 @@
     "exercises": "Exercises",
     "customers": "Customers",
     "prospects": "Prospects",
-    "agent": "Agent"
+    "agent": "Agent",
+    "business": "Business",
+    "users": "Users"
   },
   "bodyParts": {
     "title": "Body Parts Management",
@@ -170,5 +172,46 @@
   "agent": {
     "title": "Agent",
     "welcome": "Welcome to Agent Panel"
+  },
+  "business": {
+    "title": "Businesses",
+    "addBusiness": "Add Business",
+    "noBusinessesFound": "No businesses found.",
+    "businessName": "Business Name",
+    "businessBrand": "Business Brand",
+    "address": "Address",
+    "schedule": "Schedule",
+    "createTitle": "Create Business",
+    "editTitle": "Edit Business",
+    "deleteConfirm": "Are you sure you want to delete this business?",
+    "createSuccess": "Business created successfully",
+    "updateSuccess": "Business updated successfully",
+    "deleteSuccess": "Business deleted successfully",
+    "createError": "Failed to create business",
+    "updateError": "Failed to update business",
+    "deleteError": "Failed to delete business",
+    "fetchError": "Failed to fetch businesses"
+  },
+  "users": {
+    "title": "Users",
+    "addUser": "Add User",
+    "noUsersFound": "No users found.",
+    "role": "Role",
+    "business": "Business",
+    "enable": "Enable",
+    "disable": "Disable",
+    "enableSuccess": "User enabled successfully",
+    "disableSuccess": "User disabled successfully",
+    "updateStatusError": "Failed to update user status",
+    "createTitle": "Create User",
+    "editTitle": "Edit User",
+    "deleteConfirm": "Are you sure you want to delete this user?",
+    "createSuccess": "User created successfully",
+    "updateSuccess": "User updated successfully",
+    "deleteSuccess": "User deleted successfully",
+    "createError": "Failed to create user",
+    "updateError": "Failed to update user",
+    "deleteError": "Failed to delete user",
+    "fetchError": "Failed to fetch users"
   }
 }

@@ -19,6 +19,8 @@ import ListItemText from '@mui/material/ListItemText'
 import HomeIcon from '@mui/icons-material/Home'
 import PersonIcon from '@mui/icons-material/Person'
 import SmartToyIcon from '@mui/icons-material/SmartToy'
+import BusinessIcon from '@mui/icons-material/Business'
+import PeopleIcon from '@mui/icons-material/People'
 import LogoutIcon from '@mui/icons-material/Logout'
 import { Outlet, useNavigate, useLocation } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
@@ -106,6 +108,8 @@ const getNavigationItems = (t: (key: string) => string): NavigationItem[] => [
   { text: t('navigation.dashboard'), icon: <HomeIcon />, path: '/dashboard' },
   { text: t('navigation.customers'), icon: <PersonIcon />, path: '/dashboard/customer' },
   { text: t('navigation.agent'), icon: <SmartToyIcon />, path: '/dashboard/agent' },
+  { text: t('navigation.business'), icon: <BusinessIcon />, path: '/dashboard/business' },
+  { text: t('navigation.users'), icon: <PeopleIcon />, path: '/dashboard/users' },
 ]
 
 export default function AppDrawer(): React.ReactElement {

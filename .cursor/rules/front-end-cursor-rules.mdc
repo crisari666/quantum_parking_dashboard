@@ -93,6 +93,9 @@ src/
 - Handle layout, rendering, and user interactions.
 - Dont use state in page files, create small component and connect there to state or redux stat
 
+### Features
+- Every Feature has folder inside feature folder, has a page inside pages folder, is mapped in router.tsx file, is 
+
 ### Components
 - Contain **only UI logic**.
 - No Redux or API logic.
