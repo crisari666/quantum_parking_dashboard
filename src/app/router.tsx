@@ -7,6 +7,7 @@ import { Page3 } from '../pages/page3'
 import { CustomerView } from '../pages/customer'
 import { ImportCustomersPage } from '../pages/customer/import-customers'
 import AgentView from '../pages/agent'
+import ExercisesPage from '../pages/exercises'
 import SignInPage from '../pages/auth/signin_page'
 import { Nav } from '../components/Nav'
 import { ProtectedRoute } from '../components/ProtectedRoute'
@@ -19,6 +20,7 @@ export const APP_ROUTES = {
   customer: '/customer',
   importCustomers: '/customer/import',
   agent: '/agent',
+  exercises: '/exercises',
   signin: '/signin',
 } as const
 
@@ -73,6 +75,10 @@ export const router = createBrowserRouter([
       {
         path: 'agent',
         Component: AgentView,
+      },
+      {
+        path: 'exercises',
+        Component: ExercisesPage,
       },
     ],
   },

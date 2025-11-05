@@ -19,6 +19,26 @@ interface MaterialThemeData {
     neutral: Record<string, string>
     'neutral-variant': Record<string, string>
   }
+  reduxTablePadding: {
+    cell: {
+      padding: string
+      paddingTop: string
+      paddingBottom: string
+      paddingLeft: string
+      paddingRight: string
+    }
+    header: {
+      padding: string
+      paddingTop: string
+      paddingBottom: string
+      paddingLeft: string
+      paddingRight: string
+    }
+    container: {
+      padding: string
+      margin: string
+    }
+  }
 }
 
 const themeData = materialThemeData as MaterialThemeData
@@ -38,6 +58,7 @@ const createCustomTheme = (mode: ThemeMode, contrast: ContrastMode = 'normal'): 
   const schemeKey = contrast === 'normal' ? mode : `${mode}-${contrast}-contrast`
   const scheme = themeData.schemes[schemeKey as keyof typeof themeData.schemes] || themeData.schemes[mode]
   const palettes = themeData.palettes
+  const reduxTablePadding = themeData.reduxTablePadding
 
   return createTheme({
     palette: {
@@ -173,6 +194,62 @@ const createCustomTheme = (mode: ThemeMode, contrast: ContrastMode = 'normal'): 
           },
           secondary: {
             color: scheme.onSurfaceVariant,
+          },
+        },
+      },
+      MuiTable: {
+        styleOverrides: {
+          root: {
+            '& .MuiTableContainer-root': {
+              padding: reduxTablePadding.container.padding,
+              margin: reduxTablePadding.container.margin,
+            },
+          },
+        },
+      },
+      MuiTableCell: {
+        styleOverrides: {
+          root: {
+            padding: reduxTablePadding.cell.padding,
+            paddingTop: reduxTablePadding.cell.paddingTop,
+            paddingBottom: reduxTablePadding.cell.paddingBottom,
+            paddingLeft: reduxTablePadding.cell.paddingLeft,
+            paddingRight: reduxTablePadding.cell.paddingRight,
+            borderBottom: `1px solid ${scheme.outline}`,
+          },
+          head: {
+            padding: reduxTablePadding.header.padding,
+            paddingTop: reduxTablePadding.header.paddingTop,
+            paddingBottom: reduxTablePadding.header.paddingBottom,
+            paddingLeft: reduxTablePadding.header.paddingLeft,
+            paddingRight: reduxTablePadding.header.paddingRight,
+            backgroundColor: scheme.surfaceVariant,
+            color: scheme.onSurfaceVariant,
+            fontWeight: 600,
+            fontSize: '0.875rem',
+          },
+        },
+      },
+      MuiTableRow: {
+        styleOverrides: {
+          root: {
+            '&:hover': {
+              backgroundColor: scheme.surfaceVariant,
+            },
+            '&:last-child td': {
+              borderBottom: 0,
+            },
+          },
+        },
+      },
+      MuiTableContainer: {
+        styleOverrides: {
+          root: {
+            padding: reduxTablePadding.container.padding,
+            margin: reduxTablePadding.container.margin,
+            backgroundColor: scheme.surface,
+            borderRadius: '8px',
+            boxShadow: `0 1px 3px ${scheme.shadow}20`,
           },
         },
       },

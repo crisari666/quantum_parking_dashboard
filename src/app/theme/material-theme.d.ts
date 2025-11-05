@@ -23,6 +23,27 @@ declare module '*.json' {
       neutral: Record<string, string>;
       'neutral-variant': Record<string, string>;
     };
+    // Redux table padding configurations
+    reduxTablePadding: {
+      cell: {
+        padding: string;
+        paddingTop: string;
+        paddingBottom: string;
+        paddingLeft: string;
+        paddingRight: string;
+      };
+      header: {
+        padding: string;
+        paddingTop: string;
+        paddingBottom: string;
+        paddingLeft: string;
+        paddingRight: string;
+      };
+      container: {
+        padding: string;
+        margin: string;
+      };
+    };
   }
   export default value
 }

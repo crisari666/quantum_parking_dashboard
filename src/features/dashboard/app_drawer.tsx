@@ -19,16 +19,12 @@ import ListItemText from '@mui/material/ListItemText'
 import HomeIcon from '@mui/icons-material/Home'
 import PersonIcon from '@mui/icons-material/Person'
 import SmartToyIcon from '@mui/icons-material/SmartToy'
-import PageviewIcon from '@mui/icons-material/Pageview'
-import GroupIcon from '@mui/icons-material/Group'
-import UploadIcon from '@mui/icons-material/Upload'
 import LogoutIcon from '@mui/icons-material/Logout'
-import FitnessCenterIcon from '@mui/icons-material/FitnessCenter'
-import AccessibleIcon from '@mui/icons-material/Accessible'
 import { Outlet, useNavigate, useLocation } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { signOut } from '../auth/redux/auth-thunks'
 import { ThemeToggle } from '../../app/theme'
+import { useTranslation } from 'react-i18next'
 
 const DRAWER_WIDTH = 240
 
@@ -106,12 +102,10 @@ interface NavigationItem {
   readonly path: string
 }
 
-const NAVIGATION_ITEMS: NavigationItem[] = [
-  { text: 'Home', icon: <HomeIcon />, path: '/dashboard' },
-  { text: 'Customer', icon: <PersonIcon />, path: '/dashboard/customer' },
-  { text: 'Agent', icon: <SmartToyIcon />, path: '/dashboard/agent' },
-  { text: 'Muscles', icon: <FitnessCenterIcon />, path: '/dashboard/muscles' },
-  { text: 'Body Parts', icon: <AccessibleIcon />, path: '/dashboard/body-parts' },
+const getNavigationItems = (t: (key: string) => string): NavigationItem[] => [
+  { text: t('navigation.dashboard'), icon: <HomeIcon />, path: '/dashboard' },
+  { text: t('navigation.customers'), icon: <PersonIcon />, path: '/dashboard/customer' },
+  { text: t('navigation.agent'), icon: <SmartToyIcon />, path: '/dashboard/agent' },
 ]
 
 export default function AppDrawer(): React.ReactElement {
@@ -119,6 +113,7 @@ export default function AppDrawer(): React.ReactElement {
   const navigate = useNavigate()
   const location = useLocation()
   const dispatch = useDispatch()
+  const { t } = useTranslation()
   const [isOpen, setIsOpen] = React.useState<boolean>(false)
 
   const handleDrawerOpen = (): void => {
@@ -149,7 +144,8 @@ export default function AppDrawer(): React.ReactElement {
     return location.pathname === path
   }
 
-  const renderNavigationItems = (items: NavigationItem[]): React.ReactElement[] => {
+  const renderNavigationItems = (): React.ReactElement[] => {
+    const items = getNavigationItems(t)
     return items.map((item) => (
       <ListItem key={item.text} disablePadding sx={{ display: 'block' }}>
         <ListItemButton
@@ -209,7 +205,7 @@ export default function AppDrawer(): React.ReactElement {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <List>{renderNavigationItems(NAVIGATION_ITEMS)}</List>
+        <List>{renderNavigationItems()}</List>
         <Divider />
         <List>
           <ListItem disablePadding sx={{ display: 'block' }}>

@@ -33,12 +33,16 @@
     "areYouSure": "¿Estás seguro?",
     "confirmDelete": "¿Estás seguro de que quieres eliminar este elemento?",
     "copiedToClipboard": "Copiado al portapapeles",
-    "failedToCopy": "Error al copiar"
+    "failedToCopy": "Error al copiar",
+    "clear": "Limpiar",
+    "spanish": "Español",
+    "english": "Inglés"
   },
   "navigation": {
     "dashboard": "Panel de control",
     "bodyParts": "Partes del cuerpo",
     "muscles": "Músculos",
+    "exercises": "Ejercicios",
     "customers": "Clientes",
     "prospects": "Prospectos",
     "agent": "Agente"
@@ -77,6 +81,35 @@
     "updateError": "Error al actualizar músculo",
     "deleteError": "Error al eliminar músculo",
     "fetchError": "Error al obtener músculos"
+  },
+  "exercises": {
+    "title": "Gestión de Ejercicios",
+    "description": "Gestiona ejercicios y sus partes del cuerpo y músculos asociados",
+    "createExercise": "Crear Ejercicio",
+    "editExercise": "Editar Ejercicio",
+    "noExercises": "No se encontraron ejercicios",
+    "confirmDelete": "¿Estás seguro de que quieres eliminar el ejercicio \"{{name}}\"?",
+    "filters": {
+      "name": "Nombre",
+      "status": "Estado",
+      "language": "Idioma"
+    },
+    "table": {
+      "name": "Nombre",
+      "nameEnglish": "Nombre en Inglés",
+      "description": "Descripción",
+      "bodyParts": "Partes del Cuerpo",
+      "muscles": "Músculos",
+      "status": "Estado"
+    },
+    "form": {
+      "name": "Nombre",
+      "nameEnglish": "Nombre en Inglés",
+      "description": "Descripción",
+      "bodyParts": "Partes del Cuerpo",
+      "muscles": "Músculos",
+      "isActive": "Está Activo"
+    }
   },
   "auth": {
     "signIn": "Iniciar Sesión",

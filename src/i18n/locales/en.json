@@ -33,12 +33,16 @@
     "areYouSure": "Are you sure?",
     "confirmDelete": "Are you sure you want to delete this item?",
     "copiedToClipboard": "Copied to clipboard",
-    "failedToCopy": "Failed to copy"
+    "failedToCopy": "Failed to copy",
+    "clear": "Clear",
+    "spanish": "Spanish",
+    "english": "English"
   },
   "navigation": {
     "dashboard": "Dashboard",
     "bodyParts": "Body Parts",
     "muscles": "Muscles",
+    "exercises": "Exercises",
     "customers": "Customers",
     "prospects": "Prospects",
     "agent": "Agent"
@@ -77,6 +81,35 @@
     "updateError": "Failed to update muscle",
     "deleteError": "Failed to delete muscle",
     "fetchError": "Failed to fetch muscles"
+  },
+  "exercises": {
+    "title": "Exercises Management",
+    "description": "Manage exercises and their associated body parts and muscles",
+    "createExercise": "Create Exercise",
+    "editExercise": "Edit Exercise",
+    "noExercises": "No exercises found",
+    "confirmDelete": "Are you sure you want to delete the exercise \"{{name}}\"?",
+    "filters": {
+      "name": "Name",
+      "status": "Status",
+      "language": "Language"
+    },
+    "table": {
+      "name": "Name",
+      "nameEnglish": "English Name",
+      "description": "Description",
+      "bodyParts": "Body Parts",
+      "muscles": "Muscles",
+      "status": "Status"
+    },
+    "form": {
+      "name": "Name",
+      "nameEnglish": "English Name",
+      "description": "Description",
+      "bodyParts": "Body Parts",
+      "muscles": "Muscles",
+      "isActive": "Is Active"
+    }
   },
   "auth": {
     "signIn": "Sign In",
