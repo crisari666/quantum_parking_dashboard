@@ -25,7 +25,7 @@ export const businessSlice = createAppSlice({
     fetchBusinesses: create.asyncThunk(
       async () => {
         const service = BusinessService.getInstance()
-        const response = await service.getUserBusinesses()
+        const response = await service.getAllBusinesses()
         return response
       },
       {

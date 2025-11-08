@@ -107,7 +107,7 @@ interface NavigationItem {
 const getNavigationItems = (t: (key: string) => string): NavigationItem[] => [
   { text: t('navigation.dashboard'), icon: <HomeIcon />, path: '/dashboard' },
   { text: t('navigation.customers'), icon: <PersonIcon />, path: '/dashboard/customer' },
-  { text: t('navigation.agent'), icon: <SmartToyIcon />, path: '/dashboard/agent' },
+  // { text: t('navigation.agent'), icon: <SmartToyIcon />, path: '/dashboard/agent' },
   { text: t('navigation.business'), icon: <BusinessIcon />, path: '/dashboard/business' },
   { text: t('navigation.users'), icon: <PeopleIcon />, path: '/dashboard/users' },
 ]

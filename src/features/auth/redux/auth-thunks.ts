@@ -45,6 +45,7 @@ export const signIn = createAsyncThunk<
           id: response.id,
           username: response.email || '',
           enabled: true,
+          business: response.business,
         },
         token: response.token,
         business: business
@@ -113,7 +114,12 @@ export const checkAuthStatus = createAsyncThunk<
       
       if (user) {
         dispatch(setUser({
-          user: user,
+          user: {
+            id: user.id || user._id || '',
+            username: user.username || user.email || '',
+            enabled: user.enabled ?? true,
+            business: user.business
+          },
           token: token
         }))
       } else {
