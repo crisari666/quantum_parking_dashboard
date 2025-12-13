@@ -85,6 +85,8 @@ export const findVehicleByPlate = createAsyncThunk<
     
     const vehicleService = VehicleService.getInstance()
     const vehicle = await vehicleService.findVehicleByPlateNumber(plateNumber)
+
+    console.log({vehicle})
     
     dispatch(setSelectedVehicle(vehicle))
   } catch (error) {
@@ -222,7 +224,12 @@ export const fetchActiveVehicleLogs = createAsyncThunk<
     dispatch: AppDispatch
     state: RootState
   }
->('vehicle/fetchActiveVehicleLogs', async (_, { dispatch }) => {
+>('vehicle/fetchActiveVehicleLogs', async (_, { dispatch, getState }) => {
+  const state = getState()
+  if (state.vehicle.isLoadingLogs) {
+    return
+  }
+  
   try {
     dispatch(setLoadingLogs(true))
     dispatch(clearError())

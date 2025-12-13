@@ -11,7 +11,7 @@ export class VehicleLogService {
   private api: Api
 
   private constructor() {
-    this.api = Api.getInstance()
+    this.api = new Api(import.meta.env.VITE_API_URL)
   }
 
   public static getInstance(): VehicleLogService {

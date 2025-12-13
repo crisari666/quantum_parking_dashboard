@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, memo, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { Box, TextField, Button, Paper, MenuItem, Select, FormControl, InputLabel } from '@mui/material'
@@ -14,7 +14,7 @@ const VehicleLogPageControls: React.FC = () => {
   const [filterType, setFilterType] = useState<FilterType>('active')
   const [dateFilter, setDateFilter] = useState('')
 
-  const handleFilter = (): void => {
+  const handleFilter = useCallback((): void => {
     if (filterType === 'active') {
       dispatch(fetchActiveVehicleLogs())
     } else if (filterType === 'date' && dateFilter) {
@@ -22,11 +22,7 @@ const VehicleLogPageControls: React.FC = () => {
     } else {
       dispatch(fetchVehicleLogs())
     }
-  }
-
-  useEffect(() => {
-    dispatch(fetchActiveVehicleLogs())
-  }, [dispatch])
+  }, [filterType, dateFilter, dispatch])
 
   return (
     <Paper sx={{ p: 2, mb: 2 }}>
@@ -67,4 +63,4 @@ const VehicleLogPageControls: React.FC = () => {
   )
 }
 
-export default VehicleLogPageControls
+export default memo(VehicleLogPageControls)
