@@ -46,6 +46,7 @@ export const signIn = createAsyncThunk<
           username: response.email || '',
           enabled: true,
           business: response.business,
+          role: response.role,
         },
         token: response.token,
         business: business
@@ -118,7 +119,8 @@ export const checkAuthStatus = createAsyncThunk<
             id: user.id || user._id || '',
             username: user.username || user.email || '',
             enabled: user.enabled ?? true,
-            business: user.business
+            business: user.business,
+            role: user.role,
           },
           token: token
         }))

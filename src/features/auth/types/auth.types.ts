@@ -1,10 +1,13 @@
 import { Business } from '../../business/types/business.types'
 
+export type UserRole = 'admin' | 'user' | 'worker'
+
 export interface User {
   readonly id: string
   readonly username: string
   readonly enabled: boolean
   readonly business?: string
+  readonly role?: UserRole
 }
 
 export interface AuthState {
@@ -17,7 +20,7 @@ export interface AuthState {
 }
 
 export interface SignInRequest {
-  readonly identifier: string
+  readonly user: string
   readonly password: string
 }
 

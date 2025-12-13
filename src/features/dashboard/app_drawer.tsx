@@ -18,15 +18,17 @@ import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import HomeIcon from '@mui/icons-material/Home'
 import PersonIcon from '@mui/icons-material/Person'
-import SmartToyIcon from '@mui/icons-material/SmartToy'
 import BusinessIcon from '@mui/icons-material/Business'
 import PeopleIcon from '@mui/icons-material/People'
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar'
+import HistoryIcon from '@mui/icons-material/History'
 import LogoutIcon from '@mui/icons-material/Logout'
 import { Outlet, useNavigate, useLocation } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { signOut } from '../auth/redux/auth-thunks'
 import { ThemeToggle } from '../../app/theme'
 import { useTranslation } from 'react-i18next'
+import { RootState } from '../../app/store'
 
 const DRAWER_WIDTH = 240
 
@@ -102,15 +104,26 @@ interface NavigationItem {
   readonly text: string
   readonly icon: React.ReactElement
   readonly path: string
+  readonly allowedRoles: readonly ('admin' | 'user' | 'worker')[]
 }
 
-const getNavigationItems = (t: (key: string) => string): NavigationItem[] => [
-  { text: t('navigation.dashboard'), icon: <HomeIcon />, path: '/dashboard' },
-  { text: t('navigation.customers'), icon: <PersonIcon />, path: '/dashboard/customer' },
-  // { text: t('navigation.agent'), icon: <SmartToyIcon />, path: '/dashboard/agent' },
-  { text: t('navigation.business'), icon: <BusinessIcon />, path: '/dashboard/business' },
-  { text: t('navigation.users'), icon: <PeopleIcon />, path: '/dashboard/users' },
+const getAllNavigationItems = (t: (key: string) => string): NavigationItem[] => [
+  { text: t('navigation.dashboard'), icon: <HomeIcon />, path: '/dashboard', allowedRoles: ['admin', 'user', 'worker'] },
+  { text: t('navigation.customers'), icon: <PersonIcon />, path: '/dashboard/customer', allowedRoles: ['admin'] },
+  // { text: t('navigation.agent'), icon: <SmartToyIcon />, path: '/dashboard/agent', allowedRoles: ['admin', 'user', 'worker'] },
+  { text: t('navigation.business'), icon: <BusinessIcon />, path: '/dashboard/business', allowedRoles: ['admin', 'user'] },
+  { text: t('navigation.users'), icon: <PeopleIcon />, path: '/dashboard/users', allowedRoles: ['admin', 'user'] },
+  { text: t('navigation.vehicles'), icon: <DirectionsCarIcon />, path: '/dashboard/vehicles', allowedRoles: ['admin', 'user'] },
+  { text: t('navigation.vehicleLogs'), icon: <HistoryIcon />, path: '/dashboard/vehicle-logs', allowedRoles: ['admin', 'user'] },
 ]
+
+const getNavigationItems = (t: (key: string) => string, userRole?: 'admin' | 'user' | 'worker'): NavigationItem[] => {
+  const allItems = getAllNavigationItems(t)
+  if (!userRole) {
+    return allItems.filter((item) => item.path === '/dashboard')
+  }
+  return allItems.filter((item) => item.allowedRoles.includes(userRole))
+}
 
 export default function AppDrawer(): React.ReactElement {
   const theme = useTheme()
@@ -118,6 +131,7 @@ export default function AppDrawer(): React.ReactElement {
   const location = useLocation()
   const dispatch = useDispatch()
   const { t } = useTranslation()
+  const userRole = useSelector((state: RootState) => state.auth.user?.role)
   const [isOpen, setIsOpen] = React.useState<boolean>(false)
 
   const handleDrawerOpen = (): void => {
@@ -149,7 +163,7 @@ export default function AppDrawer(): React.ReactElement {
   }
 
   const renderNavigationItems = (): React.ReactElement[] => {
-    const items = getNavigationItems(t)
+    const items = getNavigationItems(t, userRole)
     return items.map((item) => (
       <ListItem key={item.text} disablePadding sx={{ display: 'block' }}>
         <ListItemButton

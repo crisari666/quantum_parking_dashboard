@@ -47,7 +47,9 @@
     "prospects": "Prospects",
     "agent": "Agent",
     "business": "Business",
-    "users": "Users"
+    "users": "Users",
+    "vehicles": "Vehicles",
+    "vehicleLogs": "Vehicle Logs"
   },
   "bodyParts": {
     "title": "Body Parts Management",
@@ -213,5 +215,35 @@
     "updateError": "Failed to update user",
     "deleteError": "Failed to delete user",
     "fetchError": "Failed to fetch users"
+  },
+  "vehicles": {
+    "title": "Vehicles",
+    "vehicleLogsTitle": "Vehicle Logs",
+    "plateNumber": "Plate Number",
+    "plateNumberPlaceholder": "Enter plate number",
+    "vehicleType": "Vehicle Type",
+    "inParking": "In Parking",
+    "notInParking": "Not In Parking",
+    "lastLog": "Last Log",
+    "userName": "User Name",
+    "phone": "Phone",
+    "searchVehicleMessage": "Search for a vehicle by plate number to view details",
+    "viewLogHistory": "View Log History",
+    "logHistory": "Log History",
+    "entryTime": "Entry Time",
+    "exitTime": "Exit Time",
+    "duration": "Duration",
+    "cost": "Cost",
+    "hasMembership": "Has Membership",
+    "status": "Status",
+    "completed": "Completed",
+    "noLogsFound": "No logs found for this vehicle",
+    "noVehicleLogsFound": "No vehicle logs found",
+    "filterType": "Filter Type",
+    "allLogs": "All Logs",
+    "activeLogs": "Active Logs",
+    "filterByDate": "Filter By Date",
+    "date": "Date",
+    "applyFilter": "Apply Filter"
   }
 }

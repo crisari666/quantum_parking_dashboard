@@ -17,9 +17,22 @@ const SessionStateManager = memo(() => {
         return
       }
 
+      if (!isAuthenticated) {
+        return
+      }
+
       const businessId = user?.business
 
-      if (!businessId || business || !isAuthenticated) {
+      // If user has no businessId, explicitly set business to null to mark loading as complete
+      if (!businessId) {
+        if (business === undefined) {
+          dispatch(setBusiness(null))
+        }
+        return
+      }
+
+      // If business is already loaded, don't fetch again
+      if (business !== null && business !== undefined) {
         return
       }
 
@@ -30,6 +43,8 @@ const SessionStateManager = memo(() => {
         dispatch(setBusiness(businessData))
       } catch (error) {
         console.error('Failed to fetch business:', error)
+        // Explicitly set to null on error to mark loading as complete
+        dispatch(setBusiness(null))
       } finally {
         isLoadingRef.current = false
       }

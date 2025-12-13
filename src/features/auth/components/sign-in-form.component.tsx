@@ -10,7 +10,7 @@ import styles from './sign-in-form.module.scss'
 export const SignInForm: React.FC = () => {
   const { t } = useTranslation()
   const [formData, setFormData] = useState<SignInRequest>({
-    identifier: '',
+    user: '',
     password: '',
   })
 
@@ -49,9 +49,9 @@ export const SignInForm: React.FC = () => {
           <label htmlFor="username">{t('auth.username')}</label>
           <input
             type="text"
-            id="identifier"
-            name="identifier"
-            value={formData.identifier}
+            id="user"
+            name="user"
+            value={formData.user}
             onChange={handleInputChange}
             required
             disabled={isLoading}

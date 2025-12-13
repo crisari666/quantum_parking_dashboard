@@ -47,7 +47,9 @@
     "prospects": "Prospectos",
     "agent": "Agente",
     "business": "Negocio",
-    "users": "Usuarios"
+    "users": "Usuarios",
+    "vehicles": "Vehículos",
+    "vehicleLogs": "Registros de Vehículos"
   },
   "bodyParts": {
     "title": "Gestión de Partes del Cuerpo",
@@ -213,5 +215,35 @@
     "updateError": "Error al actualizar usuario",
     "deleteError": "Error al eliminar usuario",
     "fetchError": "Error al obtener usuarios"
+  },
+  "vehicles": {
+    "title": "Vehículos",
+    "vehicleLogsTitle": "Registros de Vehículos",
+    "plateNumber": "Número de Placa",
+    "plateNumberPlaceholder": "Ingrese el número de placa",
+    "vehicleType": "Tipo de Vehículo",
+    "inParking": "En Estacionamiento",
+    "notInParking": "No en Estacionamiento",
+    "lastLog": "Último Registro",
+    "userName": "Nombre de Usuario",
+    "phone": "Teléfono",
+    "searchVehicleMessage": "Busque un vehículo por número de placa para ver detalles",
+    "viewLogHistory": "Ver Historial de Registros",
+    "logHistory": "Historial de Registros",
+    "entryTime": "Hora de Entrada",
+    "exitTime": "Hora de Salida",
+    "duration": "Duración",
+    "cost": "Costo",
+    "hasMembership": "Tiene Membresía",
+    "status": "Estado",
+    "completed": "Completado",
+    "noLogsFound": "No se encontraron registros para este vehículo",
+    "noVehicleLogsFound": "No se encontraron registros de vehículos",
+    "filterType": "Tipo de Filtro",
+    "allLogs": "Todos los Registros",
+    "activeLogs": "Registros Activos",
+    "filterByDate": "Filtrar por Fecha",
+    "date": "Fecha",
+    "applyFilter": "Aplicar Filtro"
   }
 }
