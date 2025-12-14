@@ -18,26 +18,29 @@ import {
 } from '@mui/material'
 import { History as HistoryIcon, DirectionsCar as CarIcon, TwoWheeler as MotorcycleIcon } from '@mui/icons-material'
 import { RootState, AppDispatch } from '../../../app/store'
-import { fetchVehicleLogsByPlate } from '../redux/vehicle-thunks'
+import { fetchVehicleLogsByVehicleId } from '../redux/vehicle-thunks'
 import VehicleLogHistoryModal from './vehicle-log-history-modal'
 
 const VehicleResultList: React.FC = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch<AppDispatch>()
-  const { findResults, isLoadingFind, error, selectedVehicleLogs } = useSelector(
+  const { findResults, isLoadingFind, error, selectedVehicleLogs, isLoadingLogs } = useSelector(
     (state: RootState) => state.vehicle
   )
   const [isLogModalOpen, setIsLogModalOpen] = useState(false)
+  const [selectedVehicleId, setSelectedVehicleId] = useState('')
   const [selectedPlateNumber, setSelectedPlateNumber] = useState('')
 
-  const handleViewLogs = (plateNumber: string): void => {
+  const handleViewLogs = (vehicleId: string, plateNumber: string): void => {
+    setSelectedVehicleId(vehicleId)
     setSelectedPlateNumber(plateNumber)
-    dispatch(fetchVehicleLogsByPlate(plateNumber))
+    dispatch(fetchVehicleLogsByVehicleId(vehicleId))
     setIsLogModalOpen(true)
   }
 
   const handleCloseLogModal = (): void => {
     setIsLogModalOpen(false)
+    setSelectedVehicleId('')
     setSelectedPlateNumber('')
   }
 
@@ -116,7 +119,7 @@ const VehicleResultList: React.FC = () => {
                 <TableCell align="center">
                   <Tooltip title={t('vehicles.viewLogHistory')}>
                     <IconButton
-                      onClick={() => handleViewLogs(vehicle.plateNumber)}
+                      onClick={() => handleViewLogs(vehicle._id, vehicle.plateNumber)}
                       color="primary"
                     >
                       <HistoryIcon />
@@ -134,6 +137,7 @@ const VehicleResultList: React.FC = () => {
         onClose={handleCloseLogModal}
         logs={selectedVehicleLogs}
         plateNumber={selectedPlateNumber}
+        isLoading={isLoadingLogs}
       />
     </Box>
   )

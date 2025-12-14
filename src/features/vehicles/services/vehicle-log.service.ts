@@ -62,6 +62,16 @@ export class VehicleLogService {
     }
   }
 
+  async getVehicleLogsByVehicleId(vehicleId: string): Promise<VehicleLog[]> {
+    try {
+      const response = await this.api.get({ path: `/vehicle-log/vehicle-id/${vehicleId}/logs` })
+      return response
+    } catch (error) {
+      console.error('Error fetching vehicle logs by vehicle ID:', error)
+      throw new Error('Failed to fetch vehicle logs by vehicle ID')
+    }
+  }
+
   async getLastVehicleLogByPlateNumber(plateNumber: string): Promise<VehicleLog> {
     try {
       const response = await this.api.get({ path: `/vehicle-log/vehicle/${plateNumber}/last` })

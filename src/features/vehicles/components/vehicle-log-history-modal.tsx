@@ -16,6 +16,7 @@ import {
   Box,
   Typography,
   Chip,
+  CircularProgress,
 } from '@mui/material'
 import { VehicleLog } from '../types/vehicle.types'
 
@@ -24,6 +25,7 @@ type VehicleLogHistoryModalProps = {
   readonly onClose: () => void
   readonly logs: VehicleLog[]
   readonly plateNumber: string
+  readonly isLoading?: boolean
 }
 
 const VehicleLogHistoryModal: React.FC<VehicleLogHistoryModalProps> = ({
@@ -31,6 +33,7 @@ const VehicleLogHistoryModal: React.FC<VehicleLogHistoryModalProps> = ({
   onClose,
   logs,
   plateNumber,
+  isLoading = false,
 }) => {
   const { t } = useTranslation()
 
@@ -53,7 +56,11 @@ const VehicleLogHistoryModal: React.FC<VehicleLogHistoryModalProps> = ({
         {t('vehicles.logHistory')} - {plateNumber}
       </DialogTitle>
       <DialogContent>
-        {logs.length === 0 ? (
+        {isLoading ? (
+          <Box display="flex" justifyContent="center" alignItems="center" minHeight="200px">
+            <CircularProgress />
+          </Box>
+        ) : logs.length === 0 ? (
           <Box p={2}>
             <Typography>{t('vehicles.noLogsFound')}</Typography>
           </Box>
@@ -101,7 +108,9 @@ const VehicleLogHistoryModal: React.FC<VehicleLogHistoryModalProps> = ({
         )}
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>{t('common.close')}</Button>
+        <Button onClick={onClose} disabled={isLoading}>
+          {t('common.close')}
+        </Button>
       </DialogActions>
     </Dialog>
   )

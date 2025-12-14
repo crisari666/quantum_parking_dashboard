@@ -274,6 +274,30 @@ export const fetchVehicleLogsByPlate = createAsyncThunk<
   }
 })
 
+export const fetchVehicleLogsByVehicleId = createAsyncThunk<
+  void,
+  string,
+  {
+    dispatch: AppDispatch
+    state: RootState
+  }
+>('vehicle/fetchVehicleLogsByVehicleId', async (vehicleId, { dispatch }) => {
+  try {
+    dispatch(setLoadingLogs(true))
+    dispatch(clearError())
+    
+    const vehicleLogService = VehicleLogService.getInstance()
+    const logs = await vehicleLogService.getVehicleLogsByVehicleId(vehicleId)
+    
+    dispatch(setSelectedVehicleLogs(logs))
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Failed to fetch vehicle logs'
+    dispatch(setError(errorMessage))
+  } finally {
+    dispatch(setLoadingLogs(false))
+  }
+})
+
 export const fetchVehicleLogsByDate = createAsyncThunk<
   void,
   string,
