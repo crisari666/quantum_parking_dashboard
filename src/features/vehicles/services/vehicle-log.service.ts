@@ -145,6 +145,16 @@ export class VehicleLogService {
     }
   }
 
+  async deleteVehicleLogAdmin(id: string): Promise<VehicleLog> {
+    try {
+      const response = await this.api.delete({ path: `/vehicle-log/admin/${id}` })
+      return response
+    } catch (error) {
+      console.error('Error deleting vehicle log (admin):', error)
+      throw new Error('Failed to delete vehicle log')
+    }
+  }
+
   async filterVehicleLogs(filterData: FilterVehicleLogsRequest): Promise<VehicleLog[]> {
     try {
       const response = await this.api.post({ path: '/vehicle-log/filter', data: filterData })

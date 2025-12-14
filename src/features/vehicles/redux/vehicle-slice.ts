@@ -74,6 +74,10 @@ export const vehicleSlice = createSlice({
       state.selectedVehicleLogs = action.payload
       state.error = null
     },
+    removeSelectedVehicleLog: (state, action: PayloadAction<string>) => {
+      state.selectedVehicleLogs = state.selectedVehicleLogs.filter(log => log._id !== action.payload)
+      state.error = null
+    },
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload
     },
@@ -110,6 +114,7 @@ export const {
   removeVehicleLog,
   setSelectedVehicle,
   setSelectedVehicleLogs,
+  removeSelectedVehicleLog,
   setFindResults,
   setLoading,
   setLoadingLogs,

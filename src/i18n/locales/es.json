@@ -252,6 +252,9 @@
     "applyBusinessFilter": "Aplicar Filtro de Negocio",
     "noVehiclesFound": "No se encontraron vehículos",
     "createdAt": "Fecha de Creación",
+    "deleteLogSuccess": "Registro de vehículo eliminado exitosamente",
+    "deleteLogError": "Error al eliminar registro de vehículo",
+    "deleteLogConfirm": "¿Estás seguro de que quieres eliminar este registro de vehículo?",
     "vehicleTypeLabels": {
       "car": "Carro",
       "motorcycle": "Motocicleta"

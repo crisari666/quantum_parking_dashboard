@@ -5,6 +5,7 @@ import {
   setVehicleLogs,
   setSelectedVehicle,
   setSelectedVehicleLogs,
+  removeSelectedVehicleLog,
   setFindResults,
   setLoading,
   setLoadingLogs,
@@ -514,6 +515,31 @@ export const deleteVehicleLog = createAsyncThunk<
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Failed to delete vehicle log'
     dispatch(setError(errorMessage))
+  } finally {
+    dispatch(setLoadingLogs(false))
+  }
+})
+
+export const deleteVehicleLogAdmin = createAsyncThunk<
+  void,
+  string,
+  {
+    dispatch: AppDispatch
+    state: RootState
+  }
+>('vehicle/deleteVehicleLogAdmin', async (id, { dispatch }) => {
+  try {
+    dispatch(setLoadingLogs(true))
+    dispatch(clearError())
+    
+    const vehicleLogService = VehicleLogService.getInstance()
+    await vehicleLogService.deleteVehicleLogAdmin(id)
+    
+    dispatch(removeSelectedVehicleLog(id))
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Failed to delete vehicle log'
+    dispatch(setError(errorMessage))
+    throw error
   } finally {
     dispatch(setLoadingLogs(false))
   }

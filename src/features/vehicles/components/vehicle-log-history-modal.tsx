@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   Dialog,
   DialogTitle,
@@ -17,7 +18,14 @@ import {
   Typography,
   Chip,
   CircularProgress,
+  IconButton,
+  Tooltip,
+  Dialog as ConfirmDialog,
 } from '@mui/material'
+import { Delete as DeleteIcon } from '@mui/icons-material'
+import { useSnackbar } from 'notistack'
+import { AppDispatch, RootState } from '../../../app/store'
+import { deleteVehicleLogAdmin } from '../redux/vehicle-thunks'
 import { VehicleLog } from '../types/vehicle.types'
 
 type VehicleLogHistoryModalProps = {
@@ -36,6 +44,13 @@ const VehicleLogHistoryModal: React.FC<VehicleLogHistoryModalProps> = ({
   isLoading = false,
 }) => {
   const { t } = useTranslation()
+  const dispatch = useDispatch<AppDispatch>()
+  const { enqueueSnackbar } = useSnackbar()
+  const user = useSelector((state: RootState) => state.auth.user)
+  const isLoadingLogs = useSelector((state: RootState) => state.vehicle.isLoadingLogs)
+  const canDelete = user?.role === 'admin' || user?.role === 'user'
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false)
+  const [logToDelete, setLogToDelete] = useState<string | null>(null)
 
   const formatDate = (dateString: string): string => {
     return new Date(dateString).toLocaleString()
@@ -48,6 +63,30 @@ const VehicleLogHistoryModal: React.FC<VehicleLogHistoryModalProps> = ({
       return `${hours}h ${mins}m`
     }
     return `${mins}m`
+  }
+
+  const handleDeleteClick = (logId: string): void => {
+    setLogToDelete(logId)
+    setDeleteConfirmOpen(true)
+  }
+
+  const handleDeleteConfirm = async (): Promise<void> => {
+    if (!logToDelete) return
+
+    try {
+      await dispatch(deleteVehicleLogAdmin(logToDelete)).unwrap()
+      enqueueSnackbar(t('vehicles.deleteLogSuccess'), { variant: 'success' })
+      setDeleteConfirmOpen(false)
+      setLogToDelete(null)
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : t('vehicles.deleteLogError')
+      enqueueSnackbar(errorMessage, { variant: 'error' })
+    }
+  }
+
+  const handleDeleteCancel = (): void => {
+    setDeleteConfirmOpen(false)
+    setLogToDelete(null)
   }
 
   return (
@@ -75,6 +114,7 @@ const VehicleLogHistoryModal: React.FC<VehicleLogHistoryModalProps> = ({
                   <TableCell>{t('vehicles.cost')}</TableCell>
                   <TableCell>{t('vehicles.hasMembership')}</TableCell>
                   <TableCell>{t('vehicles.status')}</TableCell>
+                  {canDelete && <TableCell align="center">{t('common.actions')}</TableCell>}
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -100,6 +140,20 @@ const VehicleLogHistoryModal: React.FC<VehicleLogHistoryModalProps> = ({
                         size="small"
                       />
                     </TableCell>
+                    {canDelete && (
+                      <TableCell align="center">
+                        <Tooltip title={t('common.delete')}>
+                          <IconButton
+                            onClick={() => handleDeleteClick(log._id)}
+                            color="error"
+                            size="small"
+                            disabled={isLoadingLogs}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </Tooltip>
+                      </TableCell>
+                    )}
                   </TableRow>
                 ))}
               </TableBody>
@@ -112,6 +166,32 @@ const VehicleLogHistoryModal: React.FC<VehicleLogHistoryModalProps> = ({
           {t('common.close')}
         </Button>
       </DialogActions>
+
+      <ConfirmDialog
+        open={deleteConfirmOpen}
+        onClose={handleDeleteCancel}
+        aria-labelledby="delete-confirm-dialog-title"
+      >
+        <DialogTitle id="delete-confirm-dialog-title">
+          {t('common.confirmDelete')}
+        </DialogTitle>
+        <DialogContent>
+          <Typography>{t('vehicles.deleteLogConfirm')}</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteCancel} disabled={isLoadingLogs}>
+            {t('common.cancel')}
+          </Button>
+          <Button
+            onClick={handleDeleteConfirm}
+            color="error"
+            variant="contained"
+            disabled={isLoadingLogs}
+          >
+            {t('common.delete')}
+          </Button>
+        </DialogActions>
+      </ConfirmDialog>
     </Dialog>
   )
 }
