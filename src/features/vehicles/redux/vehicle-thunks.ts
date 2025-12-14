@@ -101,6 +101,31 @@ export const findVehicleByPlate = createAsyncThunk<
   }
 })
 
+export const findVehicleByPlateForResults = createAsyncThunk<
+  void,
+  string,
+  {
+    dispatch: AppDispatch
+    state: RootState
+  }
+>('vehicle/findVehicleByPlateForResults', async (plateNumber, { dispatch }) => {
+  try {
+    dispatch(setLoadingFind(true))
+    dispatch(clearError())
+    
+    const vehicleService = VehicleService.getInstance()
+    const vehicle = await vehicleService.findVehicleByPlateNumber(plateNumber)
+    
+    // Convert single vehicle to array for findResults
+    dispatch(setFindResults(vehicle ? [vehicle] : []))
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Failed to find vehicle'
+    dispatch(setError(errorMessage))
+  } finally {
+    dispatch(setLoadingFind(false))
+  }
+})
+
 export const createVehicle = createAsyncThunk<
   void,
   CreateVehicleRequest,
