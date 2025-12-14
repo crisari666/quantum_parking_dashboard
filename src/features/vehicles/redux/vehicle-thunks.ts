@@ -5,8 +5,10 @@ import {
   setVehicleLogs,
   setSelectedVehicle,
   setSelectedVehicleLogs,
+  setFindResults,
   setLoading,
   setLoadingLogs,
+  setLoadingFind,
   setError,
   clearError,
   updateVehicleInList,
@@ -21,6 +23,8 @@ import {
   CreateVehicleLogRequest,
   UpdateVehicleLogRequest,
   CheckoutVehicleRequest,
+  FindVehicleRequest,
+  FilterVehicleLogsRequest,
 } from '../types/vehicle.types'
 
 export const fetchVehicles = createAsyncThunk<
@@ -294,6 +298,81 @@ export const fetchVehicleLogsByDate = createAsyncThunk<
   }
 })
 
+export const fetchVehiclesByBusiness = createAsyncThunk<
+  void,
+  string,
+  {
+    dispatch: AppDispatch
+    state: RootState
+  }
+>('vehicle/fetchVehiclesByBusiness', async (businessId, { dispatch }) => {
+  try {
+    dispatch(setLoading(true))
+    dispatch(clearError())
+    
+    const vehicleService = VehicleService.getInstance()
+    const vehicles = await vehicleService.getVehiclesByBusinessId(businessId)
+    
+    dispatch(setVehicles(vehicles))
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Failed to fetch vehicles by business'
+    dispatch(setError(errorMessage))
+  } finally {
+    dispatch(setLoading(false))
+  }
+})
+
+export const fetchVehicleLogsByBusiness = createAsyncThunk<
+  void,
+  string,
+  {
+    dispatch: AppDispatch
+    state: RootState
+  }
+>('vehicle/fetchVehicleLogsByBusiness', async (businessId, { dispatch }) => {
+  try {
+    dispatch(setLoadingLogs(true))
+    dispatch(clearError())
+    
+    const vehicleLogService = VehicleLogService.getInstance()
+    const logs = await vehicleLogService.getVehicleLogsByBusinessId(businessId)
+    
+    dispatch(setVehicleLogs(logs))
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Failed to fetch vehicle logs by business'
+    dispatch(setError(errorMessage))
+  } finally {
+    dispatch(setLoadingLogs(false))
+  }
+})
+
+export const fetchVehicleLogsByDateAndBusiness = createAsyncThunk<
+  void,
+  { date: string; businessId: string },
+  {
+    dispatch: AppDispatch
+    state: RootState
+  }
+>('vehicle/fetchVehicleLogsByDateAndBusiness', async ({ date, businessId }, { dispatch }) => {
+  try {
+    dispatch(setLoadingLogs(true))
+    dispatch(clearError())
+    
+    const vehicleLogService = VehicleLogService.getInstance()
+    // Fetch by date first
+    const logs = await vehicleLogService.getVehicleLogsByDate(date)
+    // Filter by business client-side
+    const filteredLogs = logs.filter(log => log.businessId === businessId)
+    
+    dispatch(setVehicleLogs(filteredLogs))
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Failed to fetch vehicle logs by date and business'
+    dispatch(setError(errorMessage))
+  } finally {
+    dispatch(setLoadingLogs(false))
+  }
+})
+
 export const createVehicleLog = createAsyncThunk<
   void,
   CreateVehicleLogRequest,
@@ -385,6 +464,54 @@ export const deleteVehicleLog = createAsyncThunk<
     dispatch(fetchVehicleLogs())
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Failed to delete vehicle log'
+    dispatch(setError(errorMessage))
+  } finally {
+    dispatch(setLoadingLogs(false))
+  }
+})
+
+export const findVehicle = createAsyncThunk<
+  void,
+  FindVehicleRequest,
+  {
+    dispatch: AppDispatch
+    state: RootState
+  }
+>('vehicle/findVehicle', async (data, { dispatch }) => {
+  try {
+    dispatch(setLoadingFind(true))
+    dispatch(clearError())
+    
+    const vehicleService = VehicleService.getInstance()
+    const vehicles = await vehicleService.findVehicle(data)
+    
+    dispatch(setFindResults(vehicles))
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Failed to find vehicle'
+    dispatch(setError(errorMessage))
+  } finally {
+    dispatch(setLoadingFind(false))
+  }
+})
+
+export const fetchVehicleLogsByFilter = createAsyncThunk<
+  void,
+  FilterVehicleLogsRequest,
+  {
+    dispatch: AppDispatch
+    state: RootState
+  }
+>('vehicle/fetchVehicleLogsByFilter', async (filterData, { dispatch }) => {
+  try {
+    dispatch(setLoadingLogs(true))
+    dispatch(clearError())
+    
+    const vehicleLogService = VehicleLogService.getInstance()
+    const logs = await vehicleLogService.filterVehicleLogs(filterData)
+    
+    dispatch(setVehicleLogs(logs))
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Failed to filter vehicle logs'
     dispatch(setError(errorMessage))
   } finally {
     dispatch(setLoadingLogs(false))

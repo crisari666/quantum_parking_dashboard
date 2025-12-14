@@ -4,6 +4,7 @@ import {
   CreateVehicleLogRequest,
   UpdateVehicleLogRequest,
   CheckoutVehicleRequest,
+  FilterVehicleLogsRequest,
 } from '../types/vehicle.types'
 
 export class VehicleLogService {
@@ -81,6 +82,16 @@ export class VehicleLogService {
     }
   }
 
+  async getVehicleLogsByBusinessId(businessId: string): Promise<VehicleLog[]> {
+    try {
+      const response = await this.api.get({ path: `/vehicle-log/business/${businessId}` })
+      return response
+    } catch (error) {
+      console.error('Error fetching vehicle logs by business:', error)
+      throw new Error('Failed to fetch vehicle logs by business')
+    }
+  }
+
   async createVehicleLog(logData: CreateVehicleLogRequest): Promise<VehicleLog> {
     try {
       const response = await this.api.post({ path: '/vehicle-log', data: logData })
@@ -121,6 +132,16 @@ export class VehicleLogService {
     } catch (error) {
       console.error('Error deleting vehicle log:', error)
       throw new Error('Failed to delete vehicle log')
+    }
+  }
+
+  async filterVehicleLogs(filterData: FilterVehicleLogsRequest): Promise<VehicleLog[]> {
+    try {
+      const response = await this.api.post({ path: '/vehicle-log/filter', data: filterData })
+      return response
+    } catch (error) {
+      console.error('Error filtering vehicle logs:', error)
+      throw new Error('Failed to filter vehicle logs')
     }
   }
 }

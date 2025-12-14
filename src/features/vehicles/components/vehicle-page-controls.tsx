@@ -1,25 +1,33 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
-import { Box, TextField, Button, Paper } from '@mui/material'
-import { Search as SearchIcon } from '@mui/icons-material'
+import { useDispatch, useSelector } from 'react-redux'
+import { Box, TextField, Button, Paper, MenuItem, Select, FormControl, InputLabel } from '@mui/material'
+import { FilterList as FilterIcon } from '@mui/icons-material'
 import { AppDispatch } from '../../../app/store'
-import { findVehicleByPlate } from '../redux/vehicle-thunks'
+import { findVehicle } from '../redux/vehicle-thunks'
+import { selectBusinesses, fetchBusinesses } from '../../business/businessSlice'
 
 const VehiclePageControls: React.FC = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch<AppDispatch>()
+  const businesses = useSelector(selectBusinesses)
   const [plateNumber, setPlateNumber] = useState('')
+  const [selectedBusinessId, setSelectedBusinessId] = useState<string>('')
 
-  const handleSearch = (): void => {
-    if (plateNumber.trim()) {
-      dispatch(findVehicleByPlate(plateNumber.trim().toUpperCase()))
-    }
-  }
+  useEffect(() => {
+    dispatch(fetchBusinesses())
+  }, [dispatch])
+
+  const handleFilter = useCallback((): void => {
+    dispatch(findVehicle({
+      plateNumber: plateNumber.trim() || '',
+      business: selectedBusinessId || '',
+    }))
+  }, [plateNumber, selectedBusinessId, dispatch])
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>): void => {
     if (e.key === 'Enter') {
-      handleSearch()
+      handleFilter()
     }
   }
 
@@ -35,13 +43,27 @@ const VehiclePageControls: React.FC = () => {
           size="small"
           sx={{ flexGrow: 1, minWidth: 200 }}
         />
+        <FormControl size="small" sx={{ minWidth: 200 }}>
+          <InputLabel>{t('vehicles.filterByBusiness')}</InputLabel>
+          <Select
+            value={selectedBusinessId}
+            label={t('vehicles.filterByBusiness')}
+            onChange={(e) => setSelectedBusinessId(e.target.value)}
+          >
+            <MenuItem value="">{t('common.all')}</MenuItem>
+            {businesses.map((business) => (
+              <MenuItem key={business._id} value={business._id}>
+                {business.businessName}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
         <Button
           variant="contained"
-          startIcon={<SearchIcon />}
-          onClick={handleSearch}
-          disabled={!plateNumber.trim()}
+          startIcon={<FilterIcon />}
+          onClick={handleFilter}
         >
-          {t('common.search')}
+          {t('vehicles.applyFilter')}
         </Button>
       </Box>
     </Paper>

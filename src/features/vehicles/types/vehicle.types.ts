@@ -2,6 +2,11 @@ export type VehicleType = 'car' | 'motorcycle'
 
 export type PaymentMethod = 0 | 1 | 2 | 3 | 4
 
+export type BusinessInfo = {
+  readonly _id: string
+  readonly businessName: string
+}
+
 export interface Vehicle {
   readonly _id: string
   readonly plateNumber: string
@@ -13,6 +18,7 @@ export interface Vehicle {
   readonly phone: string
   readonly createdAt: string
   readonly updatedAt: string
+  readonly business?: BusinessInfo
 }
 
 export interface VehicleLog {
@@ -65,4 +71,15 @@ export interface CheckoutVehicleRequest {
   readonly plateNumber?: string
   readonly vehicleType?: VehicleType
   readonly cost: number
+}
+
+export interface FindVehicleRequest {
+  readonly plateNumber: string
+  readonly business?: string
+}
+
+export interface FilterVehicleLogsRequest {
+  readonly dateStart: string
+  readonly dateEnd: string
+  readonly businessId: string
 }

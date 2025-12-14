@@ -4,6 +4,7 @@ import {
   CreateVehicleRequest,
   UpdateVehicleRequest,
   SetParkingStatusRequest,
+  FindVehicleRequest,
 } from '../types/vehicle.types'
 
 export class VehicleService {
@@ -131,6 +132,16 @@ export class VehicleService {
     } catch (error) {
       console.error('Error deleting vehicle:', error)
       throw new Error('Failed to delete vehicle')
+    }
+  }
+
+  async findVehicle(data: FindVehicleRequest): Promise<Vehicle[]> {
+    try {
+      const response = await this.api.post({ path: '/vehicle/find', data })
+      return response
+    } catch (error) {
+      console.error('Error finding vehicle:', error)
+      throw new Error('Failed to find vehicle')
     }
   }
 }

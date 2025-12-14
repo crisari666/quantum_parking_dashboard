@@ -243,7 +243,18 @@
     "allLogs": "Todos los Registros",
     "activeLogs": "Registros Activos",
     "filterByDate": "Filtrar por Fecha",
+    "filterByBusiness": "Filtrar por Negocio",
+    "business": "Negocio",
     "date": "Fecha",
-    "applyFilter": "Aplicar Filtro"
+    "dateStart": "Fecha de Inicio",
+    "dateEnd": "Fecha de Fin",
+    "applyFilter": "Aplicar Filtro",
+    "applyBusinessFilter": "Aplicar Filtro de Negocio",
+    "noVehiclesFound": "No se encontraron vehículos",
+    "createdAt": "Fecha de Creación",
+    "vehicleTypeLabels": {
+      "car": "Carro",
+      "motorcycle": "Motocicleta"
+    }
   }
 }

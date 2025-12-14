@@ -1,24 +1,20 @@
-import React, { useEffect, memo } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import React, { memo } from 'react'
+import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import {
+  CircularProgress,
   Box,
   Alert,
-  CircularProgress,
 } from '@mui/material'
-import { RootState, AppDispatch } from '../../../app/store'
-import { fetchActiveVehicleLogs } from '../redux/vehicle-thunks'
+import { RootState } from '../../../app/store'
 import VehicleLogsList from './vehicle-logs-list'
 
 const VehicleLogsContainer: React.FC = memo(() => {
   const { t } = useTranslation()
-  const dispatch = useDispatch<AppDispatch>()
   const { vehicleLogs, isLoadingLogs, error } = useSelector(
     (state: RootState) => state.vehicle
   )
-  useEffect(() => {
-    dispatch(fetchActiveVehicleLogs())
-  }, [dispatch])
+
 
   if (isLoadingLogs) {
     return (

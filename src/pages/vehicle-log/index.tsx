@@ -1,4 +1,3 @@
-import React from 'react'
 import { VehicleLogsView } from '../../features/vehicles/components'
 
 export function VehicleLogView(): JSX.Element {

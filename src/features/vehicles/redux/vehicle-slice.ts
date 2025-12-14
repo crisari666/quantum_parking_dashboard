@@ -6,8 +6,10 @@ export interface VehicleState {
   readonly vehicleLogs: VehicleLog[]
   readonly selectedVehicle: Vehicle | null
   readonly selectedVehicleLogs: VehicleLog[]
+  readonly findResults: Vehicle[]
   readonly isLoading: boolean
   readonly isLoadingLogs: boolean
+  readonly isLoadingFind: boolean
   readonly error: string | null
 }
 
@@ -16,8 +18,10 @@ const initialState: VehicleState = {
   vehicleLogs: [],
   selectedVehicle: null,
   selectedVehicleLogs: [],
+  findResults: [],
   isLoading: false,
   isLoadingLogs: false,
+  isLoadingFind: false,
   error: null,
 }
 
@@ -76,10 +80,18 @@ export const vehicleSlice = createSlice({
     setLoadingLogs: (state, action: PayloadAction<boolean>) => {
       state.isLoadingLogs = action.payload
     },
+    setFindResults: (state, action: PayloadAction<Vehicle[]>) => {
+      state.findResults = action.payload
+      state.error = null
+    },
+    setLoadingFind: (state, action: PayloadAction<boolean>) => {
+      state.isLoadingFind = action.payload
+    },
     setError: (state, action: PayloadAction<string>) => {
       state.error = action.payload
       state.isLoading = false
       state.isLoadingLogs = false
+      state.isLoadingFind = false
     },
     clearError: (state) => {
       state.error = null
@@ -98,8 +110,10 @@ export const {
   removeVehicleLog,
   setSelectedVehicle,
   setSelectedVehicleLogs,
+  setFindResults,
   setLoading,
   setLoadingLogs,
+  setLoadingFind,
   setError,
   clearError,
 } = vehicleSlice.actions
